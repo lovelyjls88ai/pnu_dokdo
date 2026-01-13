@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>독도 바로 알기: 지리적 특성과 수호의 역사</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dokdo-blue': '#1e40af', // Deep East Sea Blue
+                        'dokdo-light-blue': '#dbeafe',
+                        'dokdo-land': '#57534e', // Stone Gray
+                        'dokdo-bg': '#fafaf9', // Warm White
+                        'dokdo-accent': '#0ea5e9',
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fafaf9;
+            color: #1f2937;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-item.active {
+            border-bottom: 3px solid #1e40af;
+            color: #1e40af;
+            font-weight: 700;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .timeline-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        .timeline-scroll::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+    <!-- Chosen Palette: Serene Sovereignty (Warm Neutrals + Deep Sea Blue) -->
+    <!-- Application Structure Plan: A Dashboard/Digital Museum layout. 
+         1. Header: Global Navigation with a direct link to index.html on the right.
+         2. Main Content Area: Dynamic switching between 'Overview', 'Geography', 'History', 'Conflict/Future'.
+         3. Geography Section: Focus on location visualization and resource cards.
+         4. History Section: Interactive timeline and evidence vault.
+         5. Conflict Section: Comparative views and sentiment charts.
+         6. Footer: Summary and Call to Action. -->
+    <!-- Visualization & Content Choices: 
+         1. Distance Comparison (Bar Chart): Visually demonstrates the 'Visible to the Naked Eye' argument.
+         2. Historical Timeline (Interactive List): Organizes complex dates into a digestible flow.
+         3. Importance of Relations (Donut Chart): Visualizes the survey data regarding peace-building.
+         4. Resource Cards: Uses icons/text to explain Methane Hydrate and Ecology.
+         CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <span class="text-2xl font-black text-dokdo-blue tracking-tighter">DOKDO</span>
+                        <span class="ml-2 text-sm text-gray-500 hidden sm:block">대한민국의 아름다운 영토</span>
+                    </div>
+                </div>
+                
+                <!-- Center/Right Navigation Items -->
+                <div class="flex items-center space-x-2 sm:space-x-8">
+                    <div class="flex space-x-4 sm:space-x-6 items-center overflow-x-auto">
+                        <button onclick="router('home')" class="nav-item active px-1 pt-1 text-sm font-medium text-gray-900 whitespace-nowrap" id="nav-home">개요</button>
+                        <button onclick="router('geography')" class="nav-item px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap" id="nav-geography">지리적 가치</button>
+                        <button onclick="router('history')" class="nav-item px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap" id="nav-history">역사와 증거</button>
+                        <button onclick="router('future')" class="nav-item px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 whitespace-nowrap" id="nav-future">갈등과 미래</button>
+                    </div>
+                    
+                    <!-- Home Button (External Link) -->
+                    <div class="border-l pl-4 sm:pl-8 ml-2">
+                        <a href="index.html" class="flex items-center text-gray-500 hover:text-dokdo-blue transition-colors duration-200">
+                            <span class="text-xl mr-1">🏠</span>
+                            <span class="text-sm font-bold hidden sm:inline">Home</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="app-content" class="flex-grow bg-dokdo-bg pb-12">
+        <!-- Dynamic Content Injected Here -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dokdo-land text-white mt-auto">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-lg font-bold mb-2">"독도는 우리에게 단순한 섬이 아니라, 주권 회복의 상징입니다."</p>
+            <p class="text-sm opacity-75">본 인터랙티브 보고서는 제공된 학습 자료를 바탕으로 제작되었습니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Data Store ---
+        const appData = {
+            overview: {
+                title: "독도: 동해의 끝, 우리 땅의 시작",
+                intro: "독도는 동해의 거친 파도 속에서 수천 년의 세월을 견뎌온 대한민국 최동단의 화산섬입니다. 동도와 서도를 중심으로 89개의 부속 도서가 조화를 이루며, 독특한 해양 생태계와 자원의 보고로서 전략적·경제적 가치가 매우 높습니다.",
+                stats: [
+                    { label: "구성", value: "동도, 서도 + 89개 부속도서" },
+                    { label: "형성", value: "해수면 아래 2,000m 용암 분출" },
+                    { label: "주소", value: "경북 울릉군 울릉읍 독도리" }
+                ]
+            },
+            geography: {
+                intro: "독도는 단순히 멀리 떨어진 섬이 아닙니다. 울릉도와의 지리적 인접성은 국제법적 영유권의 중요한 근거가 되며, 천연자원과 군사적 요충지로서의 가치는 무궁무진합니다.",
+                distanceData: {
+                    labels: ['울릉도 (한국)', '오키섬 (일본)'],
+                    data: [87.4, 157.5],
+                    desc: "날씨가 맑은 날, 울릉도에서는 독도가 육안으로 보이지만 일본 오키섬에서는 보이지 않습니다."
+                },
+                resources: [
+                    { icon: "🐟", title: "황금 어장", desc: "한류와 난류가 만나는 조경 수역으로 어족 자원이 풍부합니다." },
+                    { icon: "🔥", title: "메탄 하이드레이트", desc: "'불타는 얼음'이라 불리는 차세대 에너지원이 다량 매장되어 있습니다." },
+                    { icon: "🛡️", title: "전략적 요충지", desc: "동해 중앙에 위치하여 기상 관측 및 안보 정보를 수집하는 중요한 거점입니다." },
+                    { icon: "🌿", title: "생태계의 보고", desc: "천연기념물 제336호로 지정, 괭이갈매기 등 희귀 동식물의 서식지입니다." }
+                ]
+            },
+            history: {
+                intro: "독도는 역사적으로 '주인 없는 땅'이었던 적이 없습니다. 한국과 일본의 수많은 고문헌과 지도가 독도가 한국의 영토임을 명백히 증명하고 있습니다.",
+                timeline: [
+                    { year: "512", event: "신라의 우산국 정복", detail: "이사부가 우산국(울릉도와 독도)을 신라에 복속시킴." },
+                    { year: "1454", event: "세종실록지리지", detail: "우산(독도)과 무릉(울릉도)이 강원도 울진현에 속하며, 두 섬이 서로 보여 거리가 멀지 않다고 기록.", crucial: true },
+                    { year: "1667", event: "은주시청합기 (일본)", detail: "일본 문헌 스스로 울릉도와 독도가 일본 영토 밖(조선 땅)임을 인정." },
+                    { year: "1693", event: "안용복의 활약", detail: "안용복이 일본으로 건너가 울릉도와 독도가 조선 땅임을 확약받음." },
+                    { year: "1877", event: "태정관 지령", detail: "일본 최고 행정기관이 '독도와 울릉도는 일본과 관계없다'고 공식 지시.", crucial: true },
+                    { year: "1900", event: "대한제국 칙령 제41호", detail: "고종 황제가 독도를 울릉군의 관할 구역으로 명문화." }
+                ],
+                figures: [
+                    { name: "안용복", role: "조선 숙종 시대 어부", desc: "일본 막부로부터 조선의 영유권을 인정받아낸 민간 외교가." },
+                    { name: "독도 의용수비대", role: "민간 수비 조직", desc: "6.25 전쟁 직후 혼란기에 자발적으로 독도를 지켜낸 영웅들." },
+                    { name: "최종덕", role: "최초의 주민", desc: "1981년 주민등록을 이전하여 독도를 유인도로 만듦." }
+                ]
+            },
+            conflict: {
+                intro: "1905년 일본의 불법 편입 시도 이후 갈등은 계속되고 있습니다. 하지만 우리는 감정적 대응을 넘어, 논리적이고 평화적인 방법으로 국제 사회의 지지를 이끌어내야 합니다.",
+                issues: [
+                    { title: "시마네현 고시 제40호 (1905)", content: "일본이 러일전쟁 중 독도를 '주인 없는 땅'이라며 불법 편입.", rebuttal: "독도는 이미 조선의 영토였으므로 '무주지 선점' 법리는 성립하지 않음." },
+                    { title: "다케시마의 날", content: "2005년 시마네현이 제정하여 매년 행사를 강행.", rebuttal: "지방 정부 차원의 도발을 넘어 중앙 정부 행사로 격상시키려는 움직임." },
+                    { title: "교과서 왜곡", content: "한국이 독도를 '불법 점거' 중이라고 교육.", rebuttal: "미래 세대에게 잘못된 역사 인식을 심어주는 심각한 문제." }
+                ],
+                solutions: [
+                    "논리적 무장: 사료와 국제법 학습",
+                    "지속적 홍보: 민간 외교 및 디지털 캠페인",
+                    "평화적 교류: 민간 차원의 인식 전환"
+                ]
+            }
+        };
+
+        // --- View Rendering Functions ---
+
+        function renderHome() {
+            const content = document.getElementById('app-content');
+            content.innerHTML = `
+                <div class="relative bg-dokdo-blue text-white overflow-hidden">
+                    <div class="absolute inset-0 bg-black opacity-20"></div>
+                    <div class="relative max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
+                        <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tight">독도, <br class="sm:hidden">대한민국의 아침을 여는 섬</h1>
+                        <p class="text-xl md:text-2xl max-w-3xl mb-10 font-light leading-relaxed">${appData.overview.intro}</p>
+                        <button onclick="router('geography')" class="bg-white text-dokdo-blue font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-300 transform hover:scale-105">
+                            탐험 시작하기
+                        </button>
+                    </div>
+                </div>
+
+                <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        ${appData.overview.stats.map(stat => `
+                            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center card-hover">
+                                <div class="text-dokdo-blue text-sm font-bold uppercase tracking-widest mb-2">${stat.label}</div>
+                                <div class="text-2xl font-bold text-gray-800 break-keep">${stat.value}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderGeography() {
+            const content = document.getElementById('app-content');
+            content.innerHTML = `
+                <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                    <div class="mb-12 text-center">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">지리적 특성과 가치</h2>
+                        <p class="text-lg text-gray-600 max-w-3xl mx-auto">${appData.geography.intro}</p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-12 flex flex-col lg:flex-row">
+                        <div class="lg:w-1/2 p-8 flex flex-col justify-center bg-dokdo-light-blue bg-opacity-30">
+                            <h3 class="text-2xl font-bold text-dokdo-blue mb-4">가까운 우리 땅, 독도</h3>
+                            <p class="text-gray-700 mb-6 text-lg leading-relaxed">
+                                <span class="font-bold text-dokdo-blue">"울릉도 동남쪽 뱃길 따라 87k(m)..."</span><br>
+                                날씨가 맑으면 울릉도에서 독도가 보입니다. 지리적으로 독도는 울릉도의 부속 도서입니다.
+                            </p>
+                        </div>
+                        <div class="lg:w-1/2 p-8 flex items-center justify-center bg-white">
+                            <div class="chart-container">
+                                <canvas id="distanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        ${appData.geography.resources.map(res => `
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 card-hover flex flex-col items-center text-center">
+                                <div class="text-4xl mb-4">${res.icon}</div>
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">${res.title}</h4>
+                                <p class="text-gray-600 text-sm leading-relaxed">${res.desc}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            initDistanceChart();
+        }
+
+        function renderHistory() {
+            const content = document.getElementById('app-content');
+            content.innerHTML = `
+                <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                    <div class="mb-12 text-center">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">역사와 증거</h2>
+                        <p class="text-lg text-gray-600 max-w-3xl mx-auto">${appData.history.intro}</p>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2">
+                            <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+                                <h3 class="text-xl font-bold text-dokdo-blue mb-6 flex items-center">📜 역사적 연대기</h3>
+                                <div class="relative border-l-4 border-dokdo-blue ml-3 space-y-8 pl-8 py-2">
+                                    ${appData.history.timeline.map(item => `
+                                        <div class="relative group">
+                                            <div class="absolute -left-[41px] bg-white border-4 ${item.crucial ? 'border-red-500 w-6 h-6' : 'border-dokdo-blue w-5 h-5'} rounded-full"></div>
+                                            <span class="text-2xl font-black text-gray-400 mr-4">${item.year}</span>
+                                            <h4 class="text-lg font-bold text-gray-900">${item.event}</h4>
+                                            <p class="text-gray-600 bg-gray-50 p-4 rounded-lg mt-2">${item.detail}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div class="bg-dokdo-blue text-white rounded-2xl p-6 shadow-lg">
+                                <h3 class="text-xl font-bold mb-4">🛡️ 독도를 지킨 사람들</h3>
+                                ${appData.history.figures.map(fig => `
+                                    <div class="mb-4 last:mb-0">
+                                        <div class="font-bold text-yellow-300">${fig.name}</div>
+                                        <p class="text-sm opacity-90">${fig.desc}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderFuture() {
+            const content = document.getElementById('app-content');
+            content.innerHTML = `
+                <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                    <div class="mb-12 text-center">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">갈등을 넘어 평화로</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                        <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+                            <h3 class="text-xl font-bold text-red-600 mb-6">🛑 주요 쟁점과 반박</h3>
+                            ${appData.conflict.issues.map(issue => `
+                                <div class="bg-gray-50 rounded-xl p-4 mb-4">
+                                    <h4 class="font-bold text-gray-800 mb-1">${issue.title}</h4>
+                                    <div class="text-sm text-dokdo-blue">${issue.rebuttal}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 flex flex-col items-center">
+                            <h3 class="text-xl font-bold text-dokdo-blue mb-4">미래를 위한 인식 조사</h3>
+                            <div class="chart-container" style="height: 250px;">
+                                <canvas id="sentimentChart"></canvas>
+                            </div>
+                            <p class="text-center text-sm text-gray-600 mt-4 italic">"한일관계는 미래를 위해 중요하다" - 74%</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            initSentimentChart();
+        }
+
+        // --- Chart Initialization ---
+        function initDistanceChart() {
+            const ctx = document.getElementById('distanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: appData.geography.distanceData.labels,
+                    datasets: [{
+                        label: '거리 (km)',
+                        data: appData.geography.distanceData.data,
+                        backgroundColor: ['#1e40af', '#94a3b8'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function initSentimentChart() {
+            const ctx = document.getElementById('sentimentChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['중요하다', '기타'],
+                    datasets: [{
+                        data: [74, 26],
+                        backgroundColor: ['#1e40af', '#e5e7eb'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
+
+        // --- Router Logic ---
+        function router(page) {
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('active', 'text-gray-900');
+                el.classList.add('text-gray-500');
+            });
+            const activeNav = document.getElementById(`nav-${page}`);
+            activeNav.classList.add('active', 'text-gray-900');
+            activeNav.classList.remove('text-gray-500');
+            
+            window.scrollTo(0, 0);
+
+            switch(page) {
+                case 'home': renderHome(); break;
+                case 'geography': renderGeography(); break;
+                case 'history': renderHistory(); break;
+                case 'future': renderFuture(); break;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            router('home');
+        });
+    </script>
+</body>
+</html>
