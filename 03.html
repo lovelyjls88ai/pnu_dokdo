@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>독도 지식 백과 - 용어 정리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .term-card:hover .term-title {
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 selection:bg-blue-100">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-6">
+                <a href="index.html" class="flex items-center gap-2 group text-slate-600 hover:text-blue-700 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    <span class="font-bold">홈으로</span>
+                </a>
+                <div class="h-6 w-px bg-slate-200"></div>
+                <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-indigo-600">독도 지식 아카이브</h1>
+            </div>
+            <div class="hidden md:block text-sm text-slate-500">
+                대한민국 동쪽 끝, 우리 땅 독도 이야기
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-12">
+        <!-- Hero Section -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">주요 용어로 배우는 독도</h2>
+            <p class="text-slate-600 max-w-2xl mx-auto">
+                지리, 역사적 명칭, 관련 제도 및 현대적 갈등까지 독도와 관련된 핵심 용어들을 정리했습니다. 각 항목을 클릭하여 자세한 설명을 확인해 보세요.
+            </p>
+        </div>
+
+        <!-- Content Grid by Category -->
+        <div class="space-y-16">
+            <!-- Category: Geography -->
+            <section>
+                <div class="flex items-center gap-3 mb-8 border-l-4 border-blue-600 pl-4">
+                    <h3 class="text-2xl font-bold text-slate-800">지리 및 자연</h3>
+                    <span class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full font-bold">GEOGRAPHY</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Cards will be injected by JS or hardcoded -->
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1">
+                        <h4 class="term-title text-lg font-bold mb-2 transition-colors">영토 / 영해 / 영공</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">영토는 지표 범위, 영해는 해안선 12해리, 영공은 그 수직 상공을 의미합니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [1]</div>
+                    </div>
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1">
+                        <h4 class="term-title text-lg font-bold mb-2 transition-colors">배타적 경제수역 (EEZ)</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">영해 기선에서 200해리까지의 수역으로 연안국이 자원 관리권을 가집니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [1], [2]</div>
+                    </div>
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1">
+                        <h4 class="term-title text-lg font-bold mb-2 transition-colors">가스 하이드레이트</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">독도 인근에 풍부한 고체 에너지원으로 <span class="text-orange-600 font-semibold">'불타는 얼음'</span>이라 불립니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [3]</div>
+                    </div>
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1">
+                        <h4 class="term-title text-lg font-bold mb-2 transition-colors">조면암</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">독도와 울릉도의 주요 암석으로 두 섬의 지질학적 기원이 유사함을 증명합니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [4]</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Category: Historical Names -->
+            <section>
+                <div class="flex items-center gap-3 mb-8 border-l-4 border-amber-500 pl-4">
+                    <h3 class="text-2xl font-bold text-slate-800">역사적 명칭</h3>
+                    <span class="bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded-full font-bold">NAMES</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1">
+                        <h4 class="term-title text-lg font-bold mb-2 transition-colors">우산도 (于山島)</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">우산국에서 유래한 독도의 옛 이름으로 조선 시대 여러 사료에 기록되어 있습니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [5], [6]</div>
+                    </div>
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1">
+                        <h4 class="term-title text-lg font-bold mb-2 transition-colors">가지도 (可支島)</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">독도에 서식하던 바다사자인 <span class="font-semibold text-slate-800">'강치'</span>의 이름을 딴 명칭입니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [5]</div>
+                    </div>
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1">
+                        <h4 class="term-title text-lg font-bold mb-2 transition-colors">석도 / 독도</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">'돌섬'의 한자 표기인 석도와, 방언 '독섬'을 한자로 표기한 것이 독도입니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [5], [7]</div>
+                    </div>
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1">
+                        <h4 class="term-title text-lg font-bold mb-2 transition-colors">리앙쿠르 암</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">1849년 프랑스 포경선 리앙쿠르호가 명명한 독도의 서양식 명칭입니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [8]</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Category: Systems -->
+            <section>
+                <div class="flex items-center gap-3 mb-8 border-l-4 border-emerald-600 pl-4">
+                    <h3 class="text-2xl font-bold text-slate-800">제도 및 문서</h3>
+                    <span class="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded-full font-bold">DOCUMENTS</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1">
+                        <h4 class="term-title text-lg font-bold mb-2 transition-colors">수토관 제도</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">조선 정부가 3년에 한 번씩 관리를 파견하여 섬을 조사하고 관리하던 제도입니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [9]</div>
+                    </div>
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1 border-emerald-200">
+                        <h4 class="term-title text-lg font-bold mb-2 text-emerald-800">대한제국 칙령 제41호</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">1900년 고종 황제가 공포하여 독도를 울도군의 관할 구역으로 명시한 법령입니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [7]</div>
+                    </div>
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1">
+                        <h4 class="term-title text-lg font-bold mb-2 transition-colors">SCAPIN 제677호</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">1946년 연합군 사령부가 독도를 일본 통치에서 제외하고 한국 영토로 분류한 지령입니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [10]</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Category: Modern -->
+            <section>
+                <div class="flex items-center gap-3 mb-8 border-l-4 border-red-600 pl-4">
+                    <h3 class="text-2xl font-bold text-slate-800">현대 및 갈등</h3>
+                    <span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full font-bold">MODERN</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1">
+                        <h4 class="term-title text-lg font-bold mb-2 transition-colors">평화선 (이승만 라인)</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">1952년 대한민국 정부가 해양 주권과 자원 보호를 위해 선포한 해상 경계선입니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [11]</div>
+                    </div>
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1">
+                        <h4 class="term-title text-lg font-bold mb-2 transition-colors">중간수역</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">신한일 어업협정에 따라 한일 양국이 공동으로 어업 활동을 하도록 설정한 잠정 수역입니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [2]</div>
+                    </div>
+                    <div class="term-card bg-white p-6 rounded-2xl shadow-sm border border-slate-100 transition-all hover:shadow-md hover:-translate-y-1 border-blue-200">
+                        <h4 class="term-title text-lg font-bold mb-2 text-blue-800">실효적 지배</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">특정 영토에 대해 국가가 실제로 행정권과 통치권을 행사하고 있는 명확한 상태입니다.</p>
+                        <div class="text-xs text-slate-400 font-medium">출처: [12]</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-sm mb-4">이 아카이브는 독도의 역사적, 지리적 근거를 바탕으로 제작되었습니다.</p>
+            <div class="flex justify-center gap-4 text-xs font-mono">
+                <span>[1] 해양수산부</span>
+                <span>[2] 외교부</span>
+                <span>[3] 한국가스공사</span>
+                <span>[4] 지질학회</span>
+                <span>[5] 독도연구소</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
