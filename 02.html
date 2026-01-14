@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>독도: 역사와 진실 - 인터랙티브 타임라인</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals (Stone) with Deep Blue (Ocean/History) and Muted Gold/Red Accents -->
+    <!-- Application Structure Plan: 
+         1. Header: Title, Home button (index.html), and navigation.
+         2. Dashboard Section: Analytics using Chart.js to visualize event frequency and evidence types.
+         3. Interactive Timeline Explorer: Core content area with search and category filters.
+         4. Detail View: Expandable timeline items for in-depth information.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased selection:bg-blue-100 selection:text-blue-900">
+
+    <!-- Navigation / Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <!-- Home Button -->
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <span class="text-xl group-hover:scale-110 transition-transform">🏠</span>
+                    <span class="text-sm font-bold text-stone-500 group-hover:text-blue-900 transition-colors">홈</span>
+                </a>
+                <div class="h-4 w-px bg-stone-200"></div>
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🏝️</span>
+                    <h1 class="text-xl font-bold text-blue-900 tracking-tight">독도 아카이브</h1>
+                </div>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-stone-600">
+                <button onclick="scrollToSection('dashboard')" class="hover:text-blue-700 transition-colors">데이터 분석</button>
+                <button onclick="scrollToSection('timeline')" class="hover:text-blue-700 transition-colors">연대기 탐색</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-b from-blue-50 to-stone-50 py-12 md:py-20 border-b border-stone-200">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-800 text-xs font-semibold mb-4 tracking-wide">대한민국 영토의 역사</span>
+            <h2 class="text-3xl md:text-5xl font-bold text-stone-900 mb-6 leading-tight">역사가 증명하는 진실,<br/><span class="text-blue-800">독도</span>의 기록</h2>
+            <p class="text-lg text-stone-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+                수백만 년 전의 탄생부터 현재에 이르기까지, 독도가 걸어온 길을 데이터와 기록으로 확인해보세요.
+                고지도, 실록, 국제 조약 등 다양한 사료가 독도가 한국의 고유 영토임을 명백히 보여줍니다.
+            </p>
+            <button onclick="scrollToSection('timeline')" class="bg-blue-800 hover:bg-blue-900 text-white font-medium py-3 px-8 rounded-lg shadow-lg transition-all transform hover:-translate-y-1">
+                기록 탐색 시작하기
+            </button>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="py-16 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6">
+            <div class="mb-10 text-center md:text-left">
+                <h3 class="text-2xl font-bold text-stone-900 mb-3">🗂️ 기록 데이터 분석</h3>
+                <p class="text-stone-600 max-w-3xl">
+                    역사적 기록을 정량적으로 분석한 결과입니다. 조선시대부터 이어진 지속적인 영토 인식과 20세기 이후 급증한 국제법적, 실효적 지배 관련 활동을 한눈에 파악할 수 있습니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <div class="bg-stone-50 p-6 rounded-xl border border-stone-100 shadow-sm">
+                    <h4 class="text-lg font-semibold text-stone-800 mb-2 text-center">시대별 주요 기록 빈도</h4>
+                    <p class="text-xs text-stone-500 text-center mb-4">어느 시기에 독도 관련 이슈나 기록이 집중되었는지 보여줍니다.</p>
+                    <div class="chart-container">
+                        <canvas id="eraChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-stone-50 p-6 rounded-xl border border-stone-100 shadow-sm">
+                    <h4 class="text-lg font-semibold text-stone-800 mb-2 text-center">증거 유형별 분포</h4>
+                    <p class="text-xs text-stone-500 text-center mb-4">문헌, 지도, 국제법적 조치 등 기록의 성격을 분류했습니다.</p>
+                    <div class="chart-container">
+                        <canvas id="typeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Explorer Section -->
+    <section id="timeline" class="py-16 bg-stone-50 border-t border-stone-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold text-stone-900 mb-3">🕰️ 연대기 탐색</h3>
+                <p class="text-stone-600 mb-6">
+                    아래의 필터와 검색 기능을 사용하여 특정 유형의 기록을 찾아보세요. 카드를 클릭하면 상세 내용을 확인할 수 있습니다.
+                </p>
+                
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-stone-200 flex flex-col md:flex-row gap-4 justify-between items-center sticky top-20 z-40">
+                    <div class="flex flex-wrap gap-2 justify-center md:justify-start" id="filterContainer">
+                        <button onclick="filterData('all')" class="filter-btn active px-3 py-1.5 text-sm rounded-full bg-blue-800 text-white font-medium transition-colors">전체</button>
+                        <button onclick="filterData('history')" class="filter-btn px-3 py-1.5 text-sm rounded-full bg-stone-200 text-stone-600 hover:bg-stone-300 transition-colors">역사 문헌/지도</button>
+                        <button onclick="filterData('modern')" class="filter-btn px-3 py-1.5 text-sm rounded-full bg-stone-200 text-stone-600 hover:bg-stone-300 transition-colors">근대/국제법</button>
+                        <button onclick="filterData('dispute')" class="filter-btn px-3 py-1.5 text-sm rounded-full bg-stone-200 text-stone-600 hover:bg-stone-300 transition-colors">현대 분쟁/수호</button>
+                    </div>
+                    <div class="relative w-full md:w-64">
+                        <input type="text" id="searchInput" placeholder="키워드 검색 (예: 지도, 칙령)" class="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-stone-50 focus:bg-white transition-all">
+                        <span class="absolute left-3 top-2.5 text-stone-400">🔍</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="timelineList" class="space-y-4 relative before:content-[''] before:absolute before:left-4 md:before:left-8 before:top-0 before:bottom-0 before:w-0.5 before:bg-stone-300">
+                <div class="text-center py-10 text-stone-500">데이터를 불러오는 중입니다...</div>
+            </div>
+            
+            <div id="noResults" class="hidden text-center py-12 text-stone-500 bg-white rounded-lg border border-dashed border-stone-300 mt-4">
+                검색 결과가 없습니다.
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-8 border-t border-stone-800">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <p class="text-sm mb-2">본 애플리케이션은 제공된 '독도 역사 연대기' 보고서를 바탕으로 제작되었습니다.</p>
+            <p class="text-xs">&copy; 2024 Dokdo Historical Archive Visualization.</p>
+        </div>
+    </footer>
+
+    <script>
+        const timelineData = [
+            { year: "약 460~250만 년 전", sortYear: -4600000, title: "독도 탄생", content: "화산활동으로 독도 생성 (울릉도와 지질학적으로 유사한 조면암 구성)", source: "지질학적 분석", category: "natural", type: "자연" },
+            { year: "1454년", sortYear: 1454, title: "세종실록지리지 기록", content: "우산(독도)과 무릉(울릉도) 두 섬이 날씨가 맑으면 서로 보인다고 기록함. 독도가 조선의 영토임을 보여주는 초기 관찬 기록.", source: "세종실록지리지", category: "history", type: "문헌" },
+            { year: "1481년", sortYear: 1481, title: "팔도총도 제작", content: "『신증동국여지승람』에 첨부된 지도로, 동해상에 울릉도와 우산도가 그려짐.", source: "팔도총도", category: "history", type: "지도" },
+            { year: "1531년", sortYear: 1531, title: "신증동국여지승람", content: "강원도 울진현조에 우산도(독도)에 관한 지리적 내용이 기술됨.", source: "신증동국여지승람", category: "history", type: "문헌" },
+            { year: "1667년", sortYear: 1667, title: "은주시청합기", content: "일본 관리가 작성한 보고서. 일본의 경계를 오키섬으로 한정하여 독도를 조선 땅으로 인식하고 있음을 보여주는 일본 측 자료.", source: "은주시청합기 (일본)", category: "history", type: "문헌" },
+            { year: "1693년", sortYear: 1693, title: "1차 안용복 사건", content: "안용복 일행이 일본 어부에게 납치되어 오키섬으로 끌려갔으나, 당당히 독도가 조선 땅임을 주장함.", source: "역사적 사건", category: "history", type: "사건" },
+            { year: "1696년", sortYear: 1696, title: "2차 안용복 사건 및 도해 금지령", content: "일본 막부가 울릉도와 독도가 조선 땅임을 공식 인정하고 일본인의 도해를 금지함.", source: "일본 막부 문서", category: "history", type: "국제합의" },
+            { year: "1697년", sortYear: 1697, title: "울릉도 수토관 제도", content: "조선 정부가 울릉도 수토관 제도를 신설하여 1894년까지 정기적으로 관리함.", source: "조선 정부", category: "history", type: "행정" },
+            { year: "1779년", sortYear: 1779, title: "개정 일본여지로정전도", content: "일본의 나가쿠보 세키스이가 제작한 지도. 독도를 채색하지 않거나 경계 밖으로 두어 일본 영역 밖으로 표시함.", source: "고지도", category: "history", type: "지도" },
+            { year: "1785년", sortYear: 1785, title: "삼국접양지도", content: "일본 실학자 하야시 시헤이가 독도를 조선과 같은 황색으로 칠하고 '조선의 것'이라 명백히 기록함.", source: "하야시 시헤이", category: "history", type: "지도" },
+            { year: "18세기 중반", sortYear: 1750, title: "동국지도", content: "정상기가 제작한 지도로 독도(우산도)의 위치를 정확하게 표기함.", source: "정상기", category: "history", type: "지도" },
+            { year: "1808년", sortYear: 1808, title: "만기요람", content: "'울릉과 우산은 모두 우산국의 땅'이라며 독도가 조선 영토임을 밝힘.", source: "만기요람", category: "history", type: "문헌" },
+            { year: "1832년", sortYear: 1832, title: "삼국통람도", content: "독일인 클라프로트가 제작한 지도로 독도를 한반도와 같은 색으로 표시함. 서양에서도 이를 인지함.", source: "클라프로트", category: "history", type: "지도" },
+            { year: "1849~1855년", sortYear: 1849, title: "서양 선박의 발견", content: "리앙쿠르호, 올리부차호, 호넷호 등에 의해 독도가 발견되고 서양식 이름으로 명명됨.", source: "서양 항해일지", category: "history", type: "사건" },
+            { year: "1870년", sortYear: 1870, title: "조선국 교제시말 내탐서", content: "일본 외무성 관료들이 독도가 조선에 속하게 된 사정을 보고함.", source: "일본 외무성", category: "history", type: "문헌" },
+            { year: "1877년", sortYear: 1877, title: "태정관 지령", content: "일본 최고 행정기관인 태정관이 '울릉도와 독도는 일본과 관계가 없다'고 공식 결정함. 가장 결정적인 일본 측 무효화 증거.", source: "태정관 (일본)", category: "history", type: "국제합의" },
+            { year: "1900년 10월 25일", sortYear: 1900, title: "대한제국 칙령 제41호", content: "울릉도를 울도로 개칭하고 독도(석도)를 관할 구역에 공식 포함시킴. 근대적 영토 주권의 명문화.", source: "대한제국 관보", category: "modern", type: "행정" },
+            { year: "1905년", sortYear: 1905, title: "일본의 불법 편입 시도", content: "일본 내각 결정과 시마네현 고시 제40호를 통해 독도를 '다케시마'로 개칭하고 은밀히 편입 시도.", source: "시마네현 고시", category: "modern", type: "분쟁" },
+            { year: "1906년", sortYear: 1906, title: "대한제국 의정부 지령 제3호", content: "울릉군수 심흥택의 보고를 받고 의정부가 일본의 편입 주장을 강력히 반박함.", source: "대한제국", category: "modern", type: "행정" },
+            { year: "1946년 1월 29일", sortYear: 1946, title: "SCAPIN 제677호", content: "연합군최고사령관 지령(SCAPIN)에 의해 독도를 일본의 통치 범위에서 제외하고 한국 영토로 분류함.", source: "연합군최고사령부", category: "modern", type: "국제합의" },
+            { year: "1951년 9월 8일", sortYear: 1951, title: "샌프란시스코 강화조약", content: "일본이 한국의 독립을 인정하고 영토 포기를 명시함.", source: "국제 조약", category: "modern", type: "국제합의" },
+            { year: "1952년 1월 18일", sortYear: 1952, title: "평화선(이승만 라인) 선포", content: "대한민국 정부가 평화선 선포를 통해 독도 영유권을 대내외에 명확히 함.", source: "대한민국 정부", category: "modern", type: "행정" },
+            { year: "1953~1954년", sortYear: 1953, title: "독도의용수비대 활동", content: "민간 차원의 독도의용수비대 및 독도경비대 활동 시작으로 실효적 지배 강화.", source: "민간/정부", category: "modern", type: "수호" },
+            { year: "1965년", sortYear: 1965, title: "한일기본조약", content: "독도 문제를 명문화하지 않고 일단 해결한 것으로 간주함 (현상 유지).", source: "한일 외교", category: "dispute", type: "국제합의" },
+            { year: "1968년 / 1981년", sortYear: 1968, title: "민간인 거주 시작", content: "최종덕 씨가 독도에 거주를 시작(1968)하고 1981년 최초로 주민등록을 이전함. 실효적 지배의 증거.", source: "주민등록", category: "dispute", type: "수호" },
+            { year: "1998년 9월", sortYear: 1998, title: "신한일 어업협정", content: "독도 주변을 중간수역으로 설정하면서 한일 간 갈등이 재점화됨.", source: "외교 협정", category: "dispute", type: "분쟁" },
+            { year: "2000년 3월", sortYear: 2000, title: "독도수호대 창설", content: "시민단체 독도수호대 창설 및 '독도의 날' 제정 운동 등 독도 바로 알기 활동 전개.", source: "시민단체", category: "dispute", type: "수호" },
+            { year: "2005년 3월 16일", sortYear: 2005, title: "시마네현 '다케시마의 날' 조례", content: "일본 시마네현 의회가 매년 2월 22일을 '다케시마의 날'로 정하는 조례를 가결, 갈등 심화.", source: "일본 지자체", category: "dispute", type: "분쟁" },
+            { year: "2006년 4월 25일", sortYear: 2006, title: "대통령 특별담화", content: "노무현 대통령의 한일관계 관련 대국민 특별담화 발표. 독도 수호 의지 천명.", source: "대통령실", category: "dispute", type: "행정" },
+            { year: "2008년", sortYear: 2008, title: "독도연구소 설립", content: "정부 연구기관인 독도연구소 설립 및 독도체험관 운영 시작.", source: "정부 기관", category: "dispute", type: "수호" },
+            { year: "2011~2015년", sortYear: 2011, title: "일본 교과서 왜곡", content: "일본의 초·중학교 교과서에서 독도 영유권에 관한 왜곡 기술이 급증함.", source: "일본 교과서", category: "dispute", type: "분쟁" }
+        ];
+
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function initCharts() {
+            const eraCounts = { '조선시대 이전': 0, '조선시대(1392~1897)': 0, '대한제국/일제강점기': 0, '현대(광복 후)': 0 };
+            timelineData.forEach(d => {
+                if (d.sortYear < 1392) eraCounts['조선시대 이전']++;
+                else if (d.sortYear < 1897) eraCounts['조선시대(1392~1897)']++;
+                else if (d.sortYear < 1945) eraCounts['대한제국/일제강점기']++;
+                else eraCounts['현대(광복 후)']++;
+            });
+
+            const typeCounts = {};
+            timelineData.forEach(d => {
+                let t = d.type;
+                if (['문헌', '행정', '국제합의'].includes(t)) t = '문헌/행정';
+                if (['사건', '수호'].includes(t)) t = '활동/사건';
+                typeCounts[t] = (typeCounts[t] || 0) + 1;
+            });
+
+            const ctxEra = document.getElementById('eraChart').getContext('2d');
+            new Chart(ctxEra, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(eraCounts),
+                    datasets: [{
+                        label: '기록 수',
+                        data: Object.values(eraCounts),
+                        backgroundColor: 'rgba(30, 58, 138, 0.7)',
+                        borderColor: 'rgba(30, 58, 138, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.raw}건의 주요 기록` } }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#f5f5f4' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            const ctxType = document.getElementById('typeChart').getContext('2d');
+            new Chart(ctxType, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(typeCounts),
+                    datasets: [{
+                        data: Object.values(typeCounts),
+                        backgroundColor: [
+                            'rgba(30, 58, 138, 0.8)',
+                            'rgba(234, 179, 8, 0.8)',
+                            'rgba(220, 38, 38, 0.7)',
+                            'rgba(22, 163, 74, 0.7)',
+                            'rgba(120, 113, 108, 0.7)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true } }
+                    }
+                }
+            });
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById('timelineList');
+            const noRes = document.getElementById('noResults');
+            container.innerHTML = '';
+            
+            const filtered = timelineData.filter(item => {
+                const matchesFilter = currentFilter === 'all' || item.category === currentFilter;
+                const matchesSearch = searchQuery === '' || 
+                                      item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      item.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.year.includes(searchQuery);
+                return matchesFilter && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                noRes.classList.remove('hidden');
+                return;
+            } else {
+                noRes.classList.add('hidden');
+            }
+
+            filtered.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = `relative pl-8 md:pl-12 py-4 group transition-all duration-300 ease-in-out`;
+                const dotColor = item.category === 'dispute' ? 'bg-red-500' : (item.category === 'modern' ? 'bg-blue-600' : 'bg-stone-400');
+                
+                card.innerHTML = `
+                    <div class="absolute left-0 md:left-4 top-10 w-4 h-4 rounded-full ${dotColor} border-2 border-white shadow-md z-10 group-hover:scale-125 transition-transform"></div>
+                    <div class="bg-white p-5 rounded-lg shadow-sm border border-stone-200 hover:shadow-md hover:border-blue-300 transition-all cursor-pointer" onclick="toggleDetail(this)">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+                            <span class="text-sm font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md inline-block w-fit mb-1 md:mb-0">${item.year}</span>
+                            <span class="text-xs text-stone-400 font-mono border border-stone-200 px-1.5 rounded">${item.type}</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-stone-900 mb-1 group-hover:text-blue-800 transition-colors">${item.title}</h4>
+                        <p class="text-stone-600 text-sm leading-relaxed line-clamp-2 detail-text">${item.content}</p>
+                        <div class="hidden mt-4 pt-4 border-t border-stone-100 bg-stone-50 -mx-5 -mb-5 px-5 py-3 rounded-b-lg">
+                            <div class="grid grid-cols-1 gap-2 text-sm">
+                                <div><span class="font-semibold text-stone-700">출처:</span> <span class="text-stone-600">${item.source}</span></div>
+                                <div><span class="font-semibold text-stone-700">분류:</span> <span class="text-stone-600">${getCategoryName(item.category)}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function getCategoryName(cat) {
+            const map = { 'natural': '자연사', 'history': '역사적 기록', 'modern': '근대/국제법', 'dispute': '현대 분쟁/수호' };
+            return map[cat] || cat;
+        }
+
+        function filterData(filterType) {
+            currentFilter = filterType;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.textContent.includes(getBtnLabel(filterType))) {
+                    btn.classList.add('bg-blue-800', 'text-white');
+                    btn.classList.remove('bg-stone-200', 'text-stone-600');
+                } else {
+                    btn.classList.remove('bg-blue-800', 'text-white');
+                    btn.classList.add('bg-stone-200', 'text-stone-600');
+                }
+            });
+            renderTimeline();
+        }
+        
+        function getBtnLabel(type) {
+            if(type === 'all') return '전체';
+            if(type === 'history') return '역사';
+            if(type === 'modern') return '근대';
+            if(type === 'dispute') return '현대';
+            return '';
+        }
+
+        function toggleDetail(element) {
+            const p = element.querySelector('p');
+            const detailDiv = element.querySelector('.hidden, .block.mt-4');
+            if (detailDiv.classList.contains('hidden')) {
+                p.classList.remove('line-clamp-2');
+                detailDiv.classList.remove('hidden');
+                detailDiv.classList.add('block');
+            } else {
+                p.classList.add('line-clamp-2');
+                detailDiv.classList.add('hidden');
+                detailDiv.classList.remove('block');
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderTimeline();
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            renderTimeline();
+        });
+    </script>
+</body>
+</html>
